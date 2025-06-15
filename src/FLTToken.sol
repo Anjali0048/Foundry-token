@@ -13,6 +13,8 @@ contract FLTToken is ERC20 {
     function mint(address to, uint256 amount) public {
         // require(msg.sender == owner, "Only owner can mint tokens");
         _mint(to, amount);
+        console.log("Minted %s tokens to %s", amount, to);
+        console.logUint(balanceOf(to));
     }
 
     function burn(uint256 amount) public {

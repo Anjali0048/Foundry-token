@@ -5,6 +5,10 @@ import "forge-std/Test.sol";
 import "src/FLTToken.sol";
 
 contract TestFLTToken is Test {
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+
     FLTToken t;
 
     function setUp() public {
@@ -29,7 +33,7 @@ contract TestFLTToken is Test {
         assertEq(t.balanceOf(address(this)), 45, "OK");
     }
 
-    function testAprroveFn() public {        
+    function testAprrove() public {        
         address addr = address(0x1234);
 
         t.approve(addr, 20);
@@ -53,5 +57,28 @@ contract TestFLTToken is Test {
         assertEq(t.balanceOf(address(0x67890)), 0, "0x67890 should not have any tokens");
     }
 
+    function testTransferEmit() public {
+        vm.expectEmit(true, true, false, true);
+        
+        emit Transfer(address(this), address(0x1234), 15);
+        t.transfer(address(0x1234), 15);
+    }
+
+    function testApprovalEmit() public {
+        vm.expectEmit(true, true, false, true);
+        
+        emit Approval(address(this), address(0x1234), 20);
+        t.approve(address(0x1234), 20);
+    }
+
+    // function test_Deal() public {
+    //     vm.deal(address(0x1234), 100 ether);
+    //     assertEq(address(0x1234).balance, 100 ether, "0x1234 should have 100 ether");
+
+    //     t.transferFrom(address(0x1234), address(this), 10 ether);
+    //     assertEq(address(this).balance, 10 ether, "0x1234 should have 10 ether");
+    // }
     
+
+    // again try deal and hoax
 }
